@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wash Me Dirty — Car Wash & Detailing</title>
+<link rel="icon" href="wmd-logo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0908;
+    --charcoal:#161310;
+    --charcoal-2:#1e1a15;
+    --gold:#cda349;
+    --gold-bright:#f2c14e;
+    --cream:#f2ead9;
+    --chrome:#a7a29a;
+    --water:#6fd6e8;
+    --line: rgba(205,163,73,0.25);
+    --radius: 2px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--cream);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    line-height:1.05;
+  }
+  .brush{
+    font-family:'Permanent Marker', cursive;
+    text-transform:none;
+    letter-spacing:0.5px;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  ::selection{background:var(--gold);color:var(--black);}
+
+  /* faint noise/texture overlay */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;
+    z-index:2000;
+    opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;
+    z-index:500;
+    background:rgba(10,9,8,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:76px;
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand img{width:44px;height:44px;border-radius:50%;border:1px solid var(--gold);}
+  .brand-text{font-family:'Anton';font-size:18px;letter-spacing:1px;}
+  .brand-text span{color:var(--gold-bright);}
+  .nav-links{display:flex;gap:34px;font-size:14px;letter-spacing:0.5px;text-transform:uppercase;font-weight:600;}
+  .nav-links a{opacity:0.8;transition:opacity .2s, color .2s;position:relative;}
+  .nav-links a:hover{opacity:1;color:var(--gold-bright);}
+  .nav-cta{
+    border:1px solid var(--gold);
+    padding:10px 20px;
+    font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    transition:background .2s, color .2s;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--gold);color:var(--black);}
+  .menu-btn{display:none;background:none;border:1px solid var(--gold);color:var(--cream);width:42px;height:42px;font-size:18px;cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding-top:76px;
+    background:
+      radial-gradient(ellipse at 70% 20%, rgba(205,163,73,0.10), transparent 55%),
+      radial-gradient(ellipse at 15% 85%, rgba(111,214,232,0.06), transparent 45%),
+      var(--black);
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:40px;
+    align-items:center;
+    width:100%;
+  }
+  .badge-new{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--gold);
+    padding:7px 14px;
+    font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--gold-bright);
+    margin-bottom:26px;
+  }
+  .badge-new::before{
+    content:"";width:7px;height:7px;border-radius:50%;background:var(--gold-bright);
+    box-shadow:0 0 8px var(--gold-bright);
+    animation:pulse 1.6s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .hero h1{
+    font-size:clamp(48px, 8vw, 92px);
+    color:var(--cream);
+  }
+  .hero h1 .gold{
+    color:var(--gold-bright);
+    display:block;
+    position:relative;
+  }
+  .hero p.lead{
+    margin-top:22px;
+    max-width:480px;
+    font-size:17px;
+    color:var(--chrome);
+  }
+  .hero-ctas{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;
+    padding:15px 30px;
+    font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+    border:1px solid var(--gold);
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  .btn-solid{background:var(--gold-bright);border-color:var(--gold-bright);color:var(--black);}
+  .btn-solid:hover{background:transparent;color:var(--gold-bright);}
+  .btn-ghost{color:var(--cream);}
+  .btn-ghost:hover{background:var(--gold);color:var(--black);}
+
+  .hero-visual{
+    position:relative;
+    display:flex;justify-content:center;align-items:center;
+  }
+  .hero-visual .ring{
+    width:min(420px, 86vw);
+    aspect-ratio:1;
+    border-radius:50%;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .hero-visual img{
+    width:92%;
+    border-radius:50%;
+    box-shadow:0 0 60px rgba(205,163,73,0.25), 0 0 0 1px var(--line);
+  }
+  .droplet{
+    position:absolute;
+    width:6px;height:6px;
+    background:var(--water);
+    border-radius:50% 50% 50% 0;
+    transform:rotate(45deg);
+    opacity:0;
+    animation:fall 2.6s linear infinite;
+    filter:drop-shadow(0 0 4px var(--water));
+  }
+  @keyframes fall{
+    0%{opacity:0; transform:translateY(-20px) rotate(45deg);}
+    10%{opacity:.9;}
+    85%{opacity:.5;}
+    100%{opacity:0; transform:translateY(340px) rotate(45deg);}
+  }
+
+  .scroll-cue{
+    position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--chrome);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .scroll-cue::after{
+    content:"";width:1px;height:34px;background:linear-gradient(var(--gold), transparent);
+    animation:scrolldown 1.8s infinite;
+  }
+  @keyframes scrolldown{0%{opacity:0;}50%{opacity:1;}100%{opacity:0;}}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+    background:var(--charcoal);
+    padding:14px 0;
+  }
+  .marquee-track{
+    display:flex;
+    white-space:nowrap;
+    animation:scroll-left 26s linear infinite;
+    width:max-content;
+  }
+  .marquee-track span{
+    font-family:'Permanent Marker';
+    font-size:20px;
+    color:var(--gold);
+    padding:0 26px;
+    opacity:0.85;
+  }
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{padding:110px 0;position:relative;}
+  .eyebrow{
+    font-family:'Permanent Marker';
+    color:var(--gold-bright);
+    font-size:15px;
+    display:inline-block;
+    margin-bottom:14px;
+  }
+  .section-head{max-width:640px;margin-bottom:60px;}
+  .section-head h2{font-size:clamp(32px,4.4vw,50px);color:var(--cream);}
+  .section-head p{color:var(--chrome);margin-top:16px;font-size:16px;max-width:520px;}
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- STORY ---------- */
+  .story{background:var(--charcoal);}
+  .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start;}
+  .story p{color:var(--chrome);margin-bottom:16px;font-size:16px;}
+  .story-sign{margin-top:28px;font-family:'Permanent Marker';font-size:20px;color:var(--gold-bright);}
+  .story-facts{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:10px;}
+  .fact{border-left:2px solid var(--gold);padding-left:16px;}
+  .fact .num{font-family:'Anton';font-size:30px;color:var(--gold-bright);display:block;}
+  .fact .label{font-size:13px;color:var(--chrome);text-transform:uppercase;letter-spacing:0.5px;}
+
+  /* ---------- PROCESS ---------- */
+  .process-list{border-top:1px solid var(--line);}
+  .process-item{
+    display:grid;grid-template-columns:90px 1fr;gap:28px;
+    padding:34px 0;
+    border-bottom:1px solid var(--line);
+    align-items:start;
+  }
+  .process-item .step{
+    font-family:'Anton';font-size:40px;color:var(--gold);opacity:0.55;
+  }
+  .process-item h3{font-size:22px;color:var(--cream);margin-bottom:8px;letter-spacing:0.5px;}
+  .process-item p{color:var(--chrome);font-size:15px;max-width:560px;}
+
+  /* ---------- PRICING ---------- */
+  .pricing{background:var(--charcoal);}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+  .plan{
+    border:1px solid var(--line);
+    background:var(--charcoal-2);
+    padding:44px 36px;
+    position:relative;
+    display:flex;flex-direction:column;
+  }
+  .plan.premium{
+    border-color:var(--gold);
+    background:linear-gradient(160deg, rgba(205,163,73,0.10), var(--charcoal-2) 60%);
+    box-shadow:0 0 50px rgba(205,163,73,0.12);
+  }
+  .plan .tag{
+    position:absolute;top:-14px;right:36px;
+    background:var(--gold-bright);color:var(--black);
+    font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+    padding:6px 14px;
+  }
+  .plan h3{font-size:15px;letter-spacing:2px;color:var(--chrome);margin-bottom:18px;}
+  .plan .price{font-family:'Anton';font-size:56px;color:var(--cream);}
+  .plan .price sup{font-size:22px;top:-22px;margin-right:2px;}
+  .plan .price small{font-family:'Work Sans';font-size:14px;color:var(--chrome);font-weight:400;text-transform:none;letter-spacing:0;}
+  .plan .duration{font-size:13px;color:var(--gold-bright);margin:10px 0 26px;text-transform:uppercase;letter-spacing:1px;}
+  .plan ul{list-style:none;margin-bottom:32px;flex:1;}
+  .plan li{
+    padding:11px 0;
+    border-top:1px solid var(--line);
+    font-size:14.5px;color:var(--cream);
+    display:flex;gap:10px;align-items:baseline;
+  }
+  .plan li:first-child{border-top:none;}
+  .plan li::before{content:"—"; color:var(--gold-bright); flex-shrink:0;}
+  .plan .btn{text-align:center;width:100%;}
+
+  .launch-note{
+    text-align:center;margin-top:34px;color:var(--chrome);font-size:14px;
+  }
+  .launch-note strong{color:var(--gold-bright);}
+
+  /* ---------- WHY / TRUST ---------- */
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line);}
+  .why-item{background:var(--black);padding:38px 30px;}
+  .why-item .mark{font-family:'Anton';font-size:26px;color:var(--gold);margin-bottom:16px;display:block;}
+  .why-item h3{font-size:18px;color:var(--cream);margin-bottom:10px;letter-spacing:0.4px;}
+  .why-item p{font-size:14.5px;color:var(--chrome);}
+
+  /* ---------- FOLLOW / LOCATION ---------- */
+  .contact{background:var(--charcoal);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+  .contact-card{border:1px solid var(--line);padding:36px;background:var(--charcoal-2);}
+  .contact-card h3{font-size:20px;color:var(--cream);margin-bottom:18px;}
+  .contact-row{display:flex;justify-content:space-between;padding:14px 0;border-top:1px solid var(--line);font-size:14.5px;}
+  .contact-row:first-of-type{border-top:none;}
+  .contact-row span:first-child{color:var(--chrome);}
+  .contact-row span:last-child{color:var(--cream);font-weight:600;}
+  .form input, .form textarea{
+    width:100%;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--cream);
+    padding:14px 16px;
+    font-family:'Work Sans';
+    font-size:14.5px;
+    margin-bottom:14px;
+  }
+  .form input:focus, .form textarea:focus{outline:none;border-color:var(--gold);}
+  .form textarea{resize:vertical;min-height:100px;}
+  .form label{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--chrome);display:block;margin-bottom:6px;}
+  .form .btn{width:100%;text-align:center;margin-top:6px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:50px 0 30px;border-top:1px solid var(--line);}
+  .foot-grid{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+  .foot-brand{display:flex;align-items:center;gap:12px;}
+  .foot-brand img{width:38px;height:38px;border-radius:50%;border:1px solid var(--gold);}
+  .foot-links{display:flex;gap:26px;font-size:13px;color:var(--chrome);}
+  .foot-copy{font-size:12.5px;color:var(--chrome);opacity:0.7;margin-top:24px;text-align:center;}
+
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .menu-btn{display:block;}
+    .hero-grid{grid-template-columns:1fr;text-align:left;}
+    .hero-visual{order:-1;margin-bottom:10px;}
+    .hero-visual .ring{width:220px;}
+    .story-grid{grid-template-columns:1fr;gap:40px;}
+    .price-grid{grid-template-columns:1fr;}
+    .why-grid{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+    .process-item{grid-template-columns:50px 1fr;}
+    .process-item .step{font-size:28px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand">
+      <img src="wmd-logo.jpeg" alt="Wash Me Dirty logo">
+      <div class="brand-text">WASH ME <span>DIRTY</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="#story">Story</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Visit Us</a>
+    </div>
+    <a href="#pricing" class="nav-cta">Book a Wash</a>
+    <button class="menu-btn" aria-label="menu">☰</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="badge-new">Now Open</div>
+      <h1>Clean Today.<span class="gold">Flex Tomorrow.</span></h1>
+      <p class="lead">Wash Me Dirty is a brand-new car wash and detailing studio built by people who genuinely love cars. No franchise script, no rushed jobs — just careful, hands-on washes done right, every single time.</p>
+      <div class="hero-ctas">
+        <a href="#pricing" class="btn btn-solid">See Our Plans</a>
+        <a href="#story" class="btn btn-ghost">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="ring">
+        <img src="wmd-logo.jpeg" alt="Wash Me Dirty">
+        <div class="droplet" style="left:20%; animation-delay:0s;"></div>
+        <div class="droplet" style="left:45%; animation-delay:0.9s;"></div>
+        <div class="droplet" style="left:65%; animation-delay:1.6s;"></div>
+        <div class="droplet" style="left:80%; animation-delay:0.4s;"></div>
+        <div class="droplet" style="left:32%; animation-delay:2.1s;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>CLEAN TODAY. FLEX TOMORROW. ★</span>
+    <span>NOW BOOKING OUR FIRST CUSTOMERS ★</span>
+    <span>OWNER-WASHED, EVERY TIME ★</span>
+    <span>CLEAN TODAY. FLEX TOMORROW. ★</span>
+    <span>NOW BOOKING OUR FIRST CUSTOMERS ★</span>
+    <span>OWNER-WASHED, EVERY TIME ★</span>
+  </div>
+</div>
+
+<section class="story" id="story">
+  <div class="wrap story-grid">
+    <div class="reveal">
+      <span class="eyebrow">Why we started</span>
+      <h2 style="font-size:clamp(28px,3.6vw,42px); margin-bottom:20px;">A new shop, built the old‑fashioned way</h2>
+      <p>Wash Me Dirty started with a simple complaint: too many "quick" car washes leave streaks on the glass and dust in the corners. So we built the shop we always wanted to take our own cars to — slower, more careful, and genuinely proud of the finish.</p>
+      <p>We're brand new, and we're not going to pretend otherwise with fake reviews or made-up numbers. What we can promise is that every car that comes through right now gets our full attention, because right now, every customer is the one who decides whether we do this right.</p>
+      <div class="story-sign">— The Wash Me Dirty crew</div>
+    </div>
+    <div class="reveal">
+      <div class="story-facts">
+        <div class="fact"><span class="num">2026</span><span class="label">Founded this year</span></div>
+        <div class="fact"><span class="num">100%</span><span class="label">Hands-on, no shortcuts</span></div>
+        <div class="fact"><span class="num">1st</span><span class="label">Batch of customers, launch pricing</span></div>
+        <div class="fact"><span class="num">0</span><span class="label">Fake testimonials on this page</span></div>
+      </div>
+      <p style="margin-top:32px;">Being new means we're still earning trust — so we back every wash with a simple promise: not happy with the finish, tell us before you leave and we'll re-do it, free.</p>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Four steps, one shine</h2>
+      <p>Nothing complicated — just a clear process so you know exactly what's happening to your car and how long it'll take.</p>
+    </div>
+    <div class="process-list reveal">
+      <div class="process-item">
+        <div class="step">01</div>
+        <div><h3>Pull In</h3><p>Drive up, tell us which plan you want, and we do a quick walk-around together so you know what's covered.</p></div>
+      </div>
+      <div class="process-item">
+        <div class="step">02</div>
+        <div><h3>Pre-Rinse & Foam</h3><p>We loosen road grime with a pressure rinse, then hand-apply foam to lift dirt without scratching the paint.</p></div>
+      </div>
+      <div class="process-item">
+        <div class="step">03</div>
+        <div><h3>Wash & Detail</h3><p>Panel-by-panel hand wash, wheels and tyres scrubbed, glass cleaned, and — on Premium — the interior gets the same care.</p></div>
+      </div>
+      <div class="process-item">
+        <div class="step">04</div>
+        <div><h3>Dry & Walkthrough</h3><p>Microfibre dry, final inspection, and we walk you around the car before you drive off — flex-ready.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Launch pricing</span>
+      <h2>Two plans. No confusing add-ons.</h2>
+      <p>As a new company, we're keeping our lineup simple: one plan for a proper everyday clean, one for the full detail. Prices below are our introductory rates for early customers.</p>
+    </div>
+    <div class="price-grid reveal">
+      <div class="plan">
+        <h3>BASIC WASH</h3>
+        <div class="price"><sup>₹</sup>600</div>
+        <div class="duration">~45 minutes</div>
+        <ul>
+          <li>Pressure pre-rinse</li>
+          <li>Hand foam wash, full exterior</li>
+          <li>Wheel &amp; tyre clean</li>
+          <li>Tyre shine finish</li>
+          <li>Glass &amp; mirrors, streak-free</li>
+          <li>Dashboard dust-off</li>
+          <li>Microfibre hand dry</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Book Basic</a>
+      </div>
+      <div class="plan premium">
+        <div class="tag">Most Chosen</div>
+        <h3>PREMIUM DETAIL</h3>
+        <div class="price"><sup>₹</sup>1000</div>
+        <div class="duration">~90 minutes</div>
+        <ul>
+          <li>Everything in Basic Wash</li>
+          <li>Full interior vacuum</li>
+          <li>Seat &amp; floor mat shampoo</li>
+          <li>Dashboard &amp; console polish</li>
+          <li>Deep wheel-arch &amp; underbody rinse</li>
+          <li>Spray wax protective finish</li>
+          <li>Air freshener on the house</li>
+        </ul>
+        <a href="#contact" class="btn btn-solid">Book Premium</a>
+      </div>
+    </div>
+    <p class="launch-note">Launch offer: our first <strong>100 customers</strong> keep this pricing locked in for their next visit too.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Being new, honestly</span>
+      <h2>What you get from a shop starting from zero</h2>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-item">
+        <span class="mark">01</span>
+        <h3>The owner's on the floor</h3>
+        <p>No middle management, no rushed shifts. Right now, the person washing your car has a personal stake in getting it right.</p>
+      </div>
+      <div class="why-item">
+        <span class="mark">02</span>
+        <h3>Honest pricing, no upsell traps</h3>
+        <p>Two plans, both spelled out above. What you see is what you pay — no surprise "extras" added at pickup.</p>
+      </div>
+      <div class="why-item">
+        <span class="mark">03</span>
+        <h3>A guarantee, not just a slogan</h3>
+        <p>Since we don't have years of reviews to point to yet, we back it with action: not satisfied, we re-wash it free, same visit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <span class="eyebrow">Come flex with us</span>
+      <h2 style="font-size:clamp(28px,3.6vw,42px); margin-bottom:24px;">Visit or book ahead</h2>
+      <div class="contact-card">
+        <h3>Details</h3>
+        <div class="contact-row"><span>Location</span><span>Thane, Maharashtra</span></div>
+        <div class="contact-row"><span>Hours</span><span>Mon – Sun, 8 AM – 8 PM</span></div>
+        <div class="contact-row"><span>WhatsApp</span><span>+91 00000 00000</span></div>
+        <div class="contact-row"><span>Instagram</span><span>@washmedirty</span></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="contact-card form">
+        <h3>Reserve a slot</h3>
+        <label>Name</label>
+        <input type="text" placeholder="Your name">
+        <label>Phone</label>
+        <input type="tel" placeholder="Your phone number">
+        <label>Plan</label>
+        <input type="text" placeholder="Basic ₹600 or Premium ₹1000">
+        <label>Preferred time</label>
+        <textarea placeholder="e.g. Saturday morning"></textarea>
+        <button class="btn btn-solid" type="button" onclick="alert('Thanks! Connect this form to WhatsApp or your booking number to go live.')">Request Booking</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="wmd-logo.jpeg" alt="Wash Me Dirty logo">
+        <div class="brand-text">WASH ME <span style="color:var(--gold-bright);">DIRTY</span></div>
+      </div>
+      <div class="foot-links">
+        <a href="#story">Story</a>
+        <a href="#process">Process</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Visit Us</a>
+      </div>
+    </div>
+    <div class="foot-copy">© 2026 Wash Me Dirty Car Wash. New shop, honest work.</div>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
